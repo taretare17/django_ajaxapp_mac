@@ -20,18 +20,23 @@ from dj_database_url import parse as dburl
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
-env.read_env(os.path.join(BASE_DIR, ".env"))
+# ローカルに.envがある場合のみ読み込む
+env_file = os.path.join(BASE_DIR, ".env")
+if os.path.exists(env_file):
+    env.read_env(env_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*u31ejjlte7&g+cl+9@5cvv12v$m80!-(wfc+r8=*+_znz7(s&'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'ajax_app-○○○○.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+# Renderのホスト名を自動で追加
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # Application definition
