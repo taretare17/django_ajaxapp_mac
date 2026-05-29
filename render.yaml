@@ -10,8 +10,7 @@ services:
     name: ajaxapp
     env: python
     region: ohio
-    pythonVersion: "3.11.0"
-    plan: free
+plan: free
     branch: main
     healthCheckPath: /
     buildCommand: "./build.sh"
